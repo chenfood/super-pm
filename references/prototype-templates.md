@@ -140,20 +140,26 @@ P4 阶段先把每套方案写成独立 HTML 文件（如 `scheme-a.html`、`sch
 
 ```
 {project}/.super-pm/
-  memory/user-profiles/                     # P1 用户画像（跨版本复用）
-    {product-name}-audience.md
-  memory/design-systems/                    # P2 设计语言（跨版本复用）
-    {product-name}-design-system.md
-  prototypes/{feature-name}/                # P5 最终确认的原型 HTML
-    index.html                              #   主原型（完整 HTML，可独立打开）
-    scheme-a.html                           #   P4 方案文件（如需保留）
-  deliverables/                             # P6A 开发交付文档
-  visual/                                   # Visual Companion 会话（自动管理，勿手动修改）
+  memory/                                   # 跨功能复用（P0 扫描）
+    user-profiles/{product}-audience.md
+    design-systems/{product}-design-system.md
+  artifacts/{feature-name}/                 # 一个功能的全部物料
+    p3-taskflow.html                        #   任务流程图
+    p3-emotion-map.html                     #   情感地图
+    p4-scheme-a.html                        #   方案 A
+    p4-scheme-b.html                        #   方案 B
+    p4-comparison.html                      #   方案对比画布
+    p5-prototype.html                       #   最终原型（完整 HTML，双击可打开）
+    p6-handoff.md                           #   交付文档（P6A）
+  visual/                                   # Visual Companion 会话（自动管理）
 ```
 
-### P5 原型保存流程
+### 物料保存规则
 
-1. 开发过程中：HTML 片段写入 `screen_dir`（Visual Companion 临时目录）用于浏览器预览
-2. 用户确认满意后：将原型**另存为完整 HTML 文件**到 `.super-pm/prototypes/{feature-name}/`
-3. 保存时拼装为完整文档（加入 `<!DOCTYPE>`、CDN 引用、Design System CSS 变量），确保独立双击可打开
-4. 同时保留内容片段版本在 `screen_dir` 供 Visual Companion 持续预览
+**开发过程中（P2-P5 预览）：** HTML 片段写入 `screen_dir`（Visual Companion 临时目录）。
+
+**每个 Phase 完成后：** 将该 Phase 的产出物保存到 `artifacts/{feature}/`：
+- P3 完成 → 保存 `p3-taskflow.html` 和 `p3-emotion-map.html`
+- P4 完成 → 保存各方案文件 `p4-scheme-*.html` 和对比画布 `p4-comparison.html`
+- P5 确认 → 将原型拼装为**完整 HTML 文件**（加入 `<!DOCTYPE>`、CDN 引用、Design System CSS 变量），保存为 `p5-prototype.html`，确保独立双击可打开
+- P6A → 保存 `p6-handoff.md`
