@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Superpowers Brainstorming</title>
+  <title>Super PM - Interaction Design</title>
   <style>
     /*
      * SUPER PM VISUAL COMPANION FRAME TEMPLATE
@@ -192,6 +192,125 @@
     .mock-content { padding: 1.5rem; flex: 1; }
     .mock-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
     .mock-input { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; width: 100%; }
+
+    /* ===== DEVICE FRAME (auto-activated by data-device-frame) ===== */
+
+    /* Device frame mode: left sidebar + right phone shell */
+    .device-frame-layout {
+      display: flex; height: 100%; gap: 0;
+    }
+    .device-sidebar {
+      width: 220px; flex-shrink: 0; background: var(--bg-secondary);
+      border-right: 1px solid var(--border); padding: 24px 16px;
+      display: flex; flex-direction: column; gap: 20px; overflow-y: auto;
+    }
+    .device-sidebar h2 {
+      font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;
+    }
+    .device-sidebar .sidebar-section { display: flex; flex-direction: column; gap: 8px; }
+    .device-sidebar .sidebar-label {
+      font-size: 11px; color: var(--text-tertiary); text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 2px;
+    }
+    .device-switcher { display: flex; flex-direction: column; gap: 6px; }
+    .device-switcher button {
+      padding: 10px 16px; border-radius: 10px; border: 2px solid var(--border);
+      background: var(--bg-primary); color: var(--text-primary);
+      cursor: pointer; font-size: 13px; transition: all 0.15s;
+      text-align: left; display: flex; align-items: center; gap: 8px;
+    }
+    .device-switcher button:hover { border-color: var(--accent); }
+    .device-switcher button.active {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .device-switcher .device-icon { font-size: 18px; }
+    .device-switcher .device-label { display: flex; flex-direction: column; }
+    .device-switcher .device-label small { font-size: 11px; opacity: 0.7; }
+    .device-sidebar .sidebar-hint {
+      font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+      padding: 12px; background: var(--bg-primary); border-radius: 8px;
+    }
+    .device-main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      overflow: auto; padding: 20px;
+    }
+    .device-shell {
+      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); flex-shrink: 0;
+    }
+    .device-shell-iphone {
+      width: 393px; border: 8px solid #1a1a1a; border-radius: 47px; overflow: hidden; background: #1a1a1a;
+    }
+    .device-shell-android {
+      width: 412px; border: 8px solid #2a2a2a; border-radius: 36px; overflow: hidden; background: #2a2a2a;
+    }
+    .device-statusbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; font-size: 12px; font-weight: 600; background: #fff; color: #1a1a1a;
+    }
+    .device-statusbar-iphone { height: 54px; align-items: flex-end; padding-bottom: 4px; }
+    .device-statusbar-android { height: 40px; font-weight: 400; }
+    .device-dynamic-island {
+      position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 34px; background: #1a1a1a; border-radius: 20px; z-index: 10;
+    }
+    .device-content { overflow-y: auto; background: #fff; }
+    .device-content-iphone { height: 798px; }
+    .device-content-android { height: 835px; }
+    .device-homebar {
+      height: 34px; background: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .device-homebar-pill { width: 134px; height: 5px; background: #1a1a1a; border-radius: 3px; }
+    .device-navbar-android {
+      height: 40px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; gap: 48px;
+    }
+    .device-navbar-android .nav-square { width: 16px; height: 16px; border: 2px solid #666; border-radius: 2px; }
+    .device-navbar-android .nav-circle { width: 16px; height: 16px; border: 2px solid #666; border-radius: 50%; }
+    .device-navbar-android .nav-triangle {
+      width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 14px solid #666;
+    }
+
+    /* ===== DEVICE CANVAS (multi-prototype iframe grid) ===== */
+    .canvas-grid {
+      flex: 1; display: flex; flex-wrap: wrap; align-items: flex-start;
+      justify-content: center; gap: 32px; padding: 20px; overflow: auto;
+    }
+    .canvas-grid.layout-1 { justify-content: center; }
+    .canvas-grid.layout-2 .canvas-item { max-width: calc(50% - 16px); }
+    .canvas-grid.layout-3 .canvas-item { max-width: calc(33.3% - 22px); }
+    .canvas-item {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; flex-shrink: 0;
+    }
+    .canvas-item-title {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      padding: 6px 16px; background: var(--bg-secondary); border-radius: 8px;
+      border: 1px solid var(--border); text-align: center;
+    }
+    .canvas-item-title.selected {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .canvas-item iframe {
+      border: none; display: block; width: 100%; height: 100%;
+    }
+    /* Layout switcher in sidebar */
+    .layout-switcher { display: flex; gap: 4px; }
+    .layout-switcher button {
+      flex: 1; padding: 8px; border-radius: 8px; border: 2px solid var(--border);
+      background: var(--bg-primary); color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; transition: all 0.15s; text-align: center;
+    }
+    .layout-switcher button:hover { border-color: var(--accent); }
+    .layout-switcher button.active {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    /* Scheme list in sidebar */
+    .scheme-list { display: flex; flex-direction: column; gap: 4px; }
+    .scheme-list-item {
+      padding: 8px 12px; border-radius: 8px; font-size: 13px;
+      color: var(--text-secondary); cursor: default; display: flex; align-items: center; gap: 8px;
+    }
+    .scheme-list-item .dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -209,6 +328,203 @@
   <div class="indicator-bar">
     <span id="indicator-text">Click an option above, then return to the terminal</span>
   </div>
+
+  <script>
+    // Device mode detection and shared utilities
+    document.addEventListener('DOMContentLoaded', function() {
+      var content = document.getElementById('claude-content');
+
+      // Shared: device configurations
+      var devices = {
+        iphone: {
+          shellClass: 'device-shell device-shell-iphone',
+          statusClass: 'device-statusbar device-statusbar-iphone',
+          screenClass: 'device-content device-content-iphone',
+          statusHtml: '<span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span>',
+          bottomHtml: '<div class="device-homebar"><div class="device-homebar-pill"></div></div>',
+          showIsland: true, width: 393
+        },
+        android: {
+          shellClass: 'device-shell device-shell-android',
+          statusClass: 'device-statusbar device-statusbar-android',
+          screenClass: 'device-content device-content-android',
+          statusHtml: '<span>12:00</span><span style="font-size:11px">\u25B2 \uD83D\uDCF6 \uD83D\uDD0B88%</span>',
+          bottomHtml: '<div class="device-navbar-android"><div class="nav-triangle"></div><div class="nav-circle"></div><div class="nav-square"></div></div>',
+          showIsland: false, width: 412
+        }
+      };
+
+      // Shared: enter fullscreen mode (hide header/indicator, expand main)
+      function enterFullscreen() {
+        var header = document.querySelector('.header');
+        var indicatorBar = document.querySelector('.indicator-bar');
+        var main = document.querySelector('.main');
+        if (header) header.style.display = 'none';
+        if (indicatorBar) indicatorBar.style.display = 'none';
+        if (main) { main.style.flex = '1'; main.style.overflow = 'hidden'; }
+        content.style.padding = '0';
+        content.style.height = '100%';
+      }
+
+      // Shared: build sidebar HTML
+      function buildSidebar(extraSections) {
+        return '<div class="device-sidebar">' +
+          '<div>' +
+            '<h2>Super PM</h2>' +
+            '<p style="font-size:12px;color:var(--text-secondary);margin:0">Interaction Design</p>' +
+          '</div>' +
+          '<div class="sidebar-section">' +
+            '<div class="sidebar-label">Device</div>' +
+            '<div class="device-switcher">' +
+              '<button class="active" data-dev="iphone">' +
+                '<span class="device-icon">\uD83D\uDCF1</span>' +
+                '<span class="device-label">iPhone 15<small>393 \u00D7 852</small></span>' +
+              '</button>' +
+              '<button data-dev="android">' +
+                '<span class="device-icon">\uD83E\uDD16</span>' +
+                '<span class="device-label">Android<small>412 \u00D7 915</small></span>' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+          (extraSections || '') +
+          '<div class="sidebar-section">' +
+            '<div class="sidebar-label">Status</div>' +
+            '<div class="sidebar-hint" id="sidebar-indicator">Interact with prototypes, then return to terminal</div>' +
+          '</div>' +
+        '</div>';
+      }
+
+      // Shared: build a device shell HTML string (for wrapping content or iframe)
+      function buildShell(innerContent) {
+        return '<div class="device-shell device-shell-iphone" data-role="shell">' +
+          '<div class="device-dynamic-island" data-role="island"></div>' +
+          '<div class="device-statusbar device-statusbar-iphone" data-role="statusbar"><span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span></div>' +
+          '<div class="device-content device-content-iphone" data-role="screen">' + innerContent + '</div>' +
+          '<div data-role="bottom"><div class="device-homebar"><div class="device-homebar-pill"></div></div></div>' +
+        '</div>';
+      }
+
+      // Shared: bind device switcher to update all shells on the page
+      function bindDeviceSwitcher() {
+        var buttons = document.querySelectorAll('.device-switcher button');
+        buttons.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var dev = btn.getAttribute('data-dev');
+            var cfg = devices[dev];
+            buttons.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            // Update ALL shells on the page
+            document.querySelectorAll('[data-role="shell"]').forEach(function(shell) {
+              shell.className = cfg.shellClass;
+            });
+            document.querySelectorAll('[data-role="island"]').forEach(function(el) {
+              el.style.display = cfg.showIsland ? 'block' : 'none';
+            });
+            document.querySelectorAll('[data-role="statusbar"]').forEach(function(el) {
+              el.className = cfg.statusClass;
+              el.innerHTML = cfg.statusHtml;
+            });
+            document.querySelectorAll('[data-role="screen"]').forEach(function(el) {
+              el.className = cfg.screenClass;
+            });
+            document.querySelectorAll('[data-role="bottom"]').forEach(function(el) {
+              el.innerHTML = cfg.bottomHtml;
+            });
+          });
+        });
+      }
+
+      // ===== MODE: data-device-canvas (multi-prototype iframe grid) =====
+      var canvasTrigger = content.querySelector('[data-device-canvas]');
+      if (canvasTrigger) {
+        enterFullscreen();
+
+        // Parse scheme list from data attributes
+        // Expected: <div data-device-canvas data-schemes='[{"file":"scheme-a.html","title":"方案 A","color":"#FF6B35"},...]'>
+        var schemes = [];
+        try { schemes = JSON.parse(canvasTrigger.getAttribute('data-schemes') || '[]'); } catch(e) {}
+
+        if (schemes.length === 0) return;
+
+        // Determine default layout
+        var defaultLayout = schemes.length >= 3 ? 3 : schemes.length;
+
+        // Build scheme list for sidebar
+        var schemeListHtml = '<div class="sidebar-section">' +
+          '<div class="sidebar-label">Schemes (' + schemes.length + ')</div>' +
+          '<div class="scheme-list">';
+        schemes.forEach(function(s, i) {
+          var color = s.color || ['#FF6B35','#2563EB','#059669','#8B5CF6','#EC4899'][i % 5];
+          schemeListHtml += '<div class="scheme-list-item">' +
+            '<div class="dot" style="background:' + color + '"></div>' +
+            (s.title || ('Scheme ' + String.fromCharCode(65 + i))) +
+          '</div>';
+        });
+        schemeListHtml += '</div></div>';
+
+        // Build layout switcher for sidebar
+        var layoutHtml = '<div class="sidebar-section">' +
+          '<div class="sidebar-label">Layout</div>' +
+          '<div class="layout-switcher">';
+        [1, 2, 3].forEach(function(n) {
+          layoutHtml += '<button data-layout="' + n + '"' + (n === defaultLayout ? ' class="active"' : '') + '>' + n + (n === 1 ? ' col' : ' cols') + '</button>';
+        });
+        layoutHtml += '</div></div>';
+
+        // Build canvas with iframe shells
+        var canvasHtml = '<div class="canvas-grid layout-' + defaultLayout + '" id="canvas-grid">';
+        schemes.forEach(function(s, i) {
+          var color = s.color || ['#FF6B35','#2563EB','#059669','#8B5CF6','#EC4899'][i % 5];
+          var title = s.title || ('Scheme ' + String.fromCharCode(65 + i));
+          var iframeHtml = '<iframe src="/files/' + s.file + '" style="width:100%;height:100%"></iframe>';
+          canvasHtml += '<div class="canvas-item">' +
+            '<div class="canvas-item-title" style="border-left:3px solid ' + color + '">' + title + '</div>' +
+            buildShell(iframeHtml) +
+          '</div>';
+        });
+        canvasHtml += '</div>';
+
+        content.innerHTML =
+          '<div class="device-frame-layout">' +
+            buildSidebar(schemeListHtml + layoutHtml) +
+            canvasHtml +
+          '</div>';
+
+        bindDeviceSwitcher();
+
+        // Layout switcher logic
+        var layoutBtns = document.querySelectorAll('.layout-switcher button');
+        var grid = document.getElementById('canvas-grid');
+        layoutBtns.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            layoutBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            grid.className = 'canvas-grid layout-' + btn.getAttribute('data-layout');
+          });
+        });
+
+        return; // canvas mode handled, skip single-frame check
+      }
+
+      // ===== MODE: data-device-frame (single prototype) =====
+      var trigger = content.querySelector('[data-device-frame]');
+      if (!trigger) return;
+
+      // Single prototype mode: extract content, wrap in shell
+      var innerHtml = trigger.innerHTML;
+      enterFullscreen();
+
+      content.innerHTML =
+        '<div class="device-frame-layout">' +
+          buildSidebar() +
+          '<div class="device-main">' +
+            buildShell(innerHtml) +
+          '</div>' +
+        '</div>';
+
+      bindDeviceSwitcher();
+    });
+  </script>
 
 </body>
 </html>
