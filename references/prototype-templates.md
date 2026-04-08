@@ -73,41 +73,65 @@ P5 阶段执行本文件，生成可交互 HTML 原型。
 **只需在 HTML 内容片段的根元素上加 `data-device-frame` 属性**，外壳自动激活：
 
 ```html
-<!-- P5 原型 — 加 data-device-frame 即自动包裹手机外壳 -->
+<!-- P5 原型 — 手机外壳 + 右侧交互说明 -->
 <div data-device-frame>
-  <!-- 你的页面内容，正常写 -->
+  <!-- 原型内容 -->
   <nav style="...">导航栏</nav>
   <main style="...">主内容区</main>
   <footer style="...">底部栏</footer>
+
+  <!-- 交互说明（隐藏，自动提取到右侧栏） -->
+  <div data-interaction-spec style="display:none">
+    <h3>页面流转</h3>
+    <p>首页 → 详情页 → 确认页</p>
+    <h3>交互动作</h3>
+    <table>
+      <tr><th>触发</th><th>动作</th><th>反馈</th><th>异常</th></tr>
+      <tr><td>点击提交</td><td>发送请求</td><td>loading → 成功</td><td>失败提示重试</td></tr>
+    </table>
+    <h3>动效</h3>
+    <ul><li>页面进入：右滑入 300ms ease-in-out</li></ul>
+  </div>
 </div>
 ```
 
-- P2/P3 的内容**不加**任何属性 → 正常展示，无外壳
-- P5 单原型**加** `data-device-frame` → 单手机外壳，左侧栏 + 设备切换
-- P4 多方案对比**加** `data-device-canvas` → 多 iframe 画布并排，详见下方
+- P2/P3 **不加**任何属性 → 正常展示
+- P5 单原型 **`data-device-frame`** → 手机外壳 + 右侧交互说明栏
+- P4 多方案 **`data-device-canvas`** → iframe 画布，点击方案显示对应说明
+- 交互说明写在 `<div data-interaction-spec>` 里，frame 自动提取到右侧栏展示
 
 ### P4 多方案对比画布（data-device-canvas）
 
 P4 阶段先把每套方案写成独立 HTML 文件（如 `scheme-a.html`、`scheme-b.html`），然后写一个画布页面汇总展示：
 
 ```html
-<!-- P4 画布 — 多方案 iframe 并排对比 -->
+<!-- P4 画布 — 多方案 iframe 并排对比 + 交互说明 -->
 <div data-device-canvas
      data-schemes='[
        {"file":"scheme-a.html", "title":"方案 A：极简引导", "color":"#FF6B35"},
-       {"file":"scheme-b.html", "title":"方案 B：信息丰富", "color":"#2563EB"},
-       {"file":"scheme-c.html", "title":"方案 C：游戏化", "color":"#059669"}
+       {"file":"scheme-b.html", "title":"方案 B：信息丰富", "color":"#2563EB"}
      ]'>
+
+  <!-- 每个方案的交互说明，用 data-spec-for 关联文件名 -->
+  <div data-spec-for="scheme-a.html" style="display:none">
+    <h3>方案 A 交互说明</h3>
+    <p>极简三步引导流程...</p>
+    <h3>交互动作</h3>
+    <table><tr><th>触发</th><th>动作</th></tr><tr><td>...</td><td>...</td></tr></table>
+  </div>
+  <div data-spec-for="scheme-b.html" style="display:none">
+    <h3>方案 B 交互说明</h3>
+    <p>信息丰富的仪表盘布局...</p>
+  </div>
 </div>
 ```
 
-**自动生成的 UI：**
-- 左侧栏：设备切换 + 方案列表（带颜色标识）+ 布局切换（1/2/3 列）
-- 右侧画布：每套方案各一个手机外壳，内嵌 iframe 加载对应文件
-- 设备切换时所有外壳同时变更
-- 每个方案的 iframe 通过 `/files/{filename}` 加载，完全隔离
+**三栏布局：**
+- 左侧栏：设备切换 + 方案列表 + 布局切换 + Specs 按钮
+- 中间画布：手机外壳 iframe 并排
+- **右侧栏：点击方案标题或列表项 → 显示该方案的交互说明**
 
-**注意：** 方案文件（scheme-a.html 等）可以是完整 HTML 文档或内容片段，因为它们在 iframe 中独立加载。
+**注意：** 方案文件在 iframe 中独立加载，交互说明写在画布页面的 `data-spec-for` 元素里（非 iframe 内部）。
 
 ## 高保真升级项
 
@@ -121,6 +145,66 @@ P4 阶段先把每套方案写成独立 HTML 文件（如 `scheme-a.html`、`sch
 | 滚动触发 | Intersection Observer + Alpine.js |
 | 响应式 | Tailwind 断点 `sm:` `md:` `lg:` |
 | 暗色模式 | Tailwind `dark:` + 媒体查询或手动切换 |
+
+## 交互说明文档（p5-interaction-spec.md）
+
+P5 除了输出原型 HTML，**必须同步输出一份交互说明文档**，保存为 `artifacts/{feature}/p5-interaction-spec.md`。
+
+### 文档结构
+
+```markdown
+# {功能名} 交互说明
+
+## 页面清单
+
+| 页面 | 入口 | 核心功能 |
+|------|------|---------|
+| 首页 | 启动默认 | ... |
+| 详情页 | 首页点击卡片 | ... |
+
+## 页面流转
+
+用 Mermaid 或文字描述页面跳转关系：
+首页 → 详情页 → 确认页 → 结果页
+         ↘ 分享弹窗
+
+## 逐页交互说明
+
+### {页面名}
+
+**状态列表：**
+- 默认态：...
+- 空状态：...
+- 加载中：...
+- 错误态：...
+
+**交互动作：**
+
+| 触发 | 动作 | 反馈 | 异常处理 |
+|------|------|------|---------|
+| 点击提交按钮 | 发送请求 | 按钮 loading → Toast 成功 | 网络失败 → Toast 提示重试 |
+| 下拉刷新 | 重新请求列表 | 刷新动画 | 超时 → 提示检查网络 |
+| 左滑卡片 | 显示删除按钮 | 卡片位移动画 | — |
+
+**动效说明：**
+- 页面进入：从右滑入，300ms ease-in-out
+- 弹窗出现：底部弹起 + 背景蒙层淡入
+- 列表加载：骨架屏 → 内容淡入
+
+## 全局规则
+
+- 手势：支持/不支持哪些手势
+- 键盘：输入框聚焦时页面上推行为
+- 无网络：统一兜底页/Toast
+- 权限：相机/定位/通知的请求时机和拒绝处理
+```
+
+### 输出要求
+
+- 每个页面都要覆盖：默认态、空状态、加载中、错误态
+- 每个可交互元素都要写明：触发条件、执行动作、反馈效果、异常处理
+- 动效要写明：触发时机、动画类型、时长、缓动函数
+- 和原型 HTML 保持一致 — 文档描述的就是原型中能体验到的
 
 ## Visual Companion 集成
 
@@ -150,6 +234,7 @@ P4 阶段先把每套方案写成独立 HTML 文件（如 `scheme-a.html`、`sch
     p4-scheme-b.html                        #   方案 B
     p4-comparison.html                      #   方案对比画布
     p5-prototype.html                       #   最终原型（完整 HTML，双击可打开）
+    p5-interaction-spec.md                  #   交互说明文档
     p6-handoff.md                           #   交付文档（P6A）
   visual/                                   # Visual Companion 会话（自动管理）
 ```

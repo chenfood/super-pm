@@ -311,6 +311,53 @@
     .scheme-list-item .dot {
       width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
     }
+    /* Clickable scheme items in canvas mode */
+    .scheme-list-item.clickable { cursor: pointer; transition: all 0.15s; }
+    .scheme-list-item.clickable:hover { background: var(--bg-tertiary); }
+    .scheme-list-item.clickable.active { background: var(--selected-bg); color: var(--accent); font-weight: 600; }
+
+    /* ===== RIGHT SIDEBAR (interaction spec) ===== */
+    .spec-sidebar {
+      width: 320px; flex-shrink: 0; background: var(--bg-secondary);
+      border-left: 1px solid var(--border); overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .spec-sidebar-header {
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
+      font-size: 13px; font-weight: 600; color: var(--text-primary);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .spec-sidebar-header .close-btn {
+      width: 24px; height: 24px; border-radius: 6px; border: none;
+      background: var(--bg-tertiary); color: var(--text-secondary);
+      cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    }
+    .spec-sidebar-header .close-btn:hover { background: var(--border); }
+    .spec-sidebar-body {
+      padding: 20px; flex: 1; font-size: 13px; line-height: 1.7; color: var(--text-primary);
+    }
+    .spec-sidebar-body h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px 0; color: var(--accent); }
+    .spec-sidebar-body h3:first-child { margin-top: 0; }
+    .spec-sidebar-body p { margin: 0 0 8px 0; color: var(--text-secondary); }
+    .spec-sidebar-body table { width: 100%; border-collapse: collapse; margin: 8px 0 16px 0; font-size: 12px; }
+    .spec-sidebar-body th {
+      text-align: left; padding: 6px 8px; background: var(--bg-tertiary);
+      border: 1px solid var(--border); font-weight: 600; color: var(--text-secondary);
+    }
+    .spec-sidebar-body td { padding: 6px 8px; border: 1px solid var(--border); }
+    .spec-sidebar-body ul, .spec-sidebar-body ol { margin: 4px 0 12px 20px; color: var(--text-secondary); }
+    .spec-sidebar-body li { margin-bottom: 4px; }
+    .spec-sidebar-empty {
+      padding: 40px 20px; text-align: center; color: var(--text-tertiary); font-size: 13px;
+    }
+    /* Toggle button for spec sidebar (in left sidebar) */
+    .spec-toggle {
+      padding: 10px 16px; border-radius: 10px; border: 2px solid var(--border);
+      background: var(--bg-primary); color: var(--text-primary);
+      cursor: pointer; font-size: 13px; transition: all 0.15s; text-align: left; width: 100%;
+    }
+    .spec-toggle:hover { border-color: var(--accent); }
+    .spec-toggle.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   </style>
 </head>
 <body>
@@ -388,10 +435,63 @@
           '</div>' +
           (extraSections || '') +
           '<div class="sidebar-section">' +
+            '<div class="sidebar-label">Specs</div>' +
+            '<button class="spec-toggle" id="spec-toggle-btn">Show Interaction Spec</button>' +
+          '</div>' +
+          '<div class="sidebar-section">' +
             '<div class="sidebar-label">Status</div>' +
             '<div class="sidebar-hint" id="sidebar-indicator">Interact with prototypes, then return to terminal</div>' +
           '</div>' +
         '</div>';
+      }
+
+      // Shared: build right spec sidebar
+      function buildSpecSidebar(specHtml) {
+        return '<div class="spec-sidebar" id="spec-sidebar" style="display:none">' +
+          '<div class="spec-sidebar-header">' +
+            '<span>Interaction Spec</span>' +
+            '<button class="close-btn" id="spec-close">\u00D7</button>' +
+          '</div>' +
+          '<div class="spec-sidebar-body" id="spec-body">' +
+            (specHtml || '<div class="spec-sidebar-empty">Select a prototype to view its interaction spec</div>') +
+          '</div>' +
+        '</div>';
+      }
+
+      // Shared: extract spec HTML from a trigger element's [data-interaction-spec] child
+      function extractSpec(el) {
+        var specEl = el ? el.querySelector('[data-interaction-spec]') : null;
+        return specEl ? specEl.innerHTML : '';
+      }
+
+      // Shared: bind spec sidebar toggle and close
+      function bindSpecSidebar() {
+        var sidebar = document.getElementById('spec-sidebar');
+        var closeBtn = document.getElementById('spec-close');
+        var toggleBtn = document.getElementById('spec-toggle-btn');
+        if (closeBtn && sidebar) {
+          closeBtn.addEventListener('click', function() {
+            sidebar.style.display = 'none';
+            if (toggleBtn) toggleBtn.classList.remove('active');
+          });
+        }
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var visible = sidebar.style.display !== 'none';
+            sidebar.style.display = visible ? 'none' : 'flex';
+            toggleBtn.classList.toggle('active', !visible);
+          });
+        }
+      }
+
+      // Shared: update spec sidebar content
+      function showSpec(html) {
+        var sidebar = document.getElementById('spec-sidebar');
+        var body = document.getElementById('spec-body');
+        var toggleBtn = document.getElementById('spec-toggle-btn');
+        if (body) body.innerHTML = html || '<div class="spec-sidebar-empty">No interaction spec available</div>';
+        if (sidebar) sidebar.style.display = 'flex';
+        if (toggleBtn) toggleBtn.classList.add('active');
       }
 
       // Shared: build a device shell HTML string (for wrapping content or iframe)
@@ -471,26 +571,72 @@
         });
         layoutHtml += '</div></div>';
 
+        // Collect specs from data-spec-for elements inside canvasTrigger
+        var specMap = {};
+        canvasTrigger.querySelectorAll('[data-spec-for]').forEach(function(el) {
+          specMap[el.getAttribute('data-spec-for')] = el.innerHTML;
+        });
+
         // Build canvas with iframe shells
         var canvasHtml = '<div class="canvas-grid layout-' + defaultLayout + '" id="canvas-grid">';
         schemes.forEach(function(s, i) {
           var color = s.color || ['#FF6B35','#2563EB','#059669','#8B5CF6','#EC4899'][i % 5];
           var title = s.title || ('Scheme ' + String.fromCharCode(65 + i));
           var iframeHtml = '<iframe src="/files/' + s.file + '" style="width:100%;height:100%"></iframe>';
-          canvasHtml += '<div class="canvas-item">' +
-            '<div class="canvas-item-title" style="border-left:3px solid ' + color + '">' + title + '</div>' +
+          canvasHtml += '<div class="canvas-item" data-scheme-file="' + s.file + '">' +
+            '<div class="canvas-item-title" style="border-left:3px solid ' + color + ';cursor:pointer" data-scheme-click="' + s.file + '">' + title + '</div>' +
             buildShell(iframeHtml) +
           '</div>';
         });
         canvasHtml += '</div>';
 
+        // Make scheme list items clickable
+        schemeListHtml = schemeListHtml.replace(/scheme-list-item/g, 'scheme-list-item clickable');
+
         content.innerHTML =
           '<div class="device-frame-layout">' +
             buildSidebar(schemeListHtml + layoutHtml) +
             canvasHtml +
+            buildSpecSidebar() +
           '</div>';
 
         bindDeviceSwitcher();
+        bindSpecSidebar();
+
+        // Click scheme title or sidebar list → show spec in right sidebar
+        function selectScheme(file) {
+          // Highlight canvas title
+          document.querySelectorAll('.canvas-item-title').forEach(function(el) { el.classList.remove('selected'); });
+          var clicked = document.querySelector('[data-scheme-click="' + file + '"]');
+          if (clicked) clicked.classList.add('selected');
+          // Highlight sidebar list
+          document.querySelectorAll('.scheme-list-item').forEach(function(el) { el.classList.remove('active'); });
+          // Show spec
+          var html = specMap[file];
+          if (html) {
+            showSpec(html);
+          } else {
+            showSpec('<div class="spec-sidebar-empty">This scheme has no interaction spec</div>');
+          }
+        }
+
+        document.querySelectorAll('[data-scheme-click]').forEach(function(el) {
+          el.addEventListener('click', function() {
+            selectScheme(el.getAttribute('data-scheme-click'));
+          });
+        });
+
+        // Also make sidebar scheme list clickable
+        var listItems = document.querySelectorAll('.scheme-list-item.clickable');
+        listItems.forEach(function(el, i) {
+          if (schemes[i]) {
+            el.addEventListener('click', function() {
+              selectScheme(schemes[i].file);
+              listItems.forEach(function(li) { li.classList.remove('active'); });
+              el.classList.add('active');
+            });
+          }
+        });
 
         // Layout switcher logic
         var layoutBtns = document.querySelectorAll('.layout-switcher button');
@@ -510,8 +656,16 @@
       var trigger = content.querySelector('[data-device-frame]');
       if (!trigger) return;
 
-      // Single prototype mode: extract content, wrap in shell
+      // Single prototype mode: extract content and spec, wrap in shell
+      var specHtml = extractSpec(trigger);
       var innerHtml = trigger.innerHTML;
+      // Remove the spec div from innerHtml so it doesn't render in the prototype
+      var tempDiv = document.createElement('div');
+      tempDiv.innerHTML = innerHtml;
+      var specInner = tempDiv.querySelector('[data-interaction-spec]');
+      if (specInner) specInner.parentNode.removeChild(specInner);
+      innerHtml = tempDiv.innerHTML;
+
       enterFullscreen();
 
       content.innerHTML =
@@ -520,9 +674,13 @@
           '<div class="device-main">' +
             buildShell(innerHtml) +
           '</div>' +
+          buildSpecSidebar(specHtml) +
         '</div>';
 
       bindDeviceSwitcher();
+      bindSpecSidebar();
+      // Auto-show spec if available
+      if (specHtml) showSpec(specHtml);
     });
   </script>
 
