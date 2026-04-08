@@ -17,4 +17,4 @@
 将此目录添加到您的 AI 助手（如 Trae, Claude Code）的 Skill/Agent 路径中，AI 即可根据 `SKILL.md` 的定义自动触发交互设计能力。
 
 ---
-*Created with Trae IDE | AI Skill Specification*
+*Created with Claude Code | AI Skill Specification*

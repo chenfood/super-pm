@@ -82,7 +82,7 @@ P5 阶段执行本文件，生成可交互 HTML 原型。
 
 原型文件通过 Visual Companion 服务器预览：
 
-1. 启动服务器（复用 brainstorming 脚本）：
+1. 启动服务器：
 ```bash
 ~/.claude/skills/super-pm/scripts/start-server.sh --project-dir /path/to/project
 ```
