@@ -98,9 +98,32 @@ h1 { color: #333; } p { color: #666; }</style>
 <body><h1>Super PM Visual</h1>
 <p>Waiting for the agent to push a screen...</p></body></html>`;
 
-const frameTemplate = fs.readFileSync(path.join(__dirname, 'frame-template.html'), 'utf-8');
-const helperScript = fs.readFileSync(path.join(__dirname, 'helper.js'), 'utf-8');
-const helperInjection = '<script>\n' + helperScript + '\n</script>';
+const FRAME_TEMPLATE_PATH = path.join(__dirname, 'frame-template.html');
+const HELPER_SCRIPT_PATH = path.join(__dirname, 'helper.js');
+
+// Hot-reload: re-read template files on each request so skill-level
+// changes (themes, layout tweaks, etc.) take effect without restarting
+// the server or regenerating prototypes.
+let _frameCache = null, _frameMtime = 0;
+let _helperCache = null, _helperMtime = 0;
+
+function getFrameTemplate() {
+  const mt = fs.statSync(FRAME_TEMPLATE_PATH).mtimeMs;
+  if (!_frameCache || mt !== _frameMtime) {
+    _frameCache = fs.readFileSync(FRAME_TEMPLATE_PATH, 'utf-8');
+    _frameMtime = mt;
+  }
+  return _frameCache;
+}
+
+function getHelperInjection() {
+  const mt = fs.statSync(HELPER_SCRIPT_PATH).mtimeMs;
+  if (!_helperCache || mt !== _helperMtime) {
+    _helperCache = '<script>\n' + fs.readFileSync(HELPER_SCRIPT_PATH, 'utf-8') + '\n</script>';
+    _helperMtime = mt;
+  }
+  return _helperCache;
+}
 
 // ========== Helper Functions ==========
 
@@ -110,7 +133,7 @@ function isFullDocument(html) {
 }
 
 function wrapInFrame(content) {
-  return frameTemplate.replace('<!-- CONTENT -->', content);
+  return getFrameTemplate().replace('<!-- CONTENT -->', content);
 }
 
 function getNewestScreen() {
@@ -134,10 +157,11 @@ function handleRequest(req, res) {
       ? (raw => isFullDocument(raw) ? raw : wrapInFrame(raw))(fs.readFileSync(screenFile, 'utf-8'))
       : WAITING_PAGE;
 
+    const injection = getHelperInjection();
     if (html.includes('</body>')) {
-      html = html.replace('</body>', helperInjection + '\n</body>');
+      html = html.replace('</body>', injection + '\n</body>');
     } else {
-      html += helperInjection;
+      html += injection;
     }
 
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });

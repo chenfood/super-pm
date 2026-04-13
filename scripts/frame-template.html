@@ -16,182 +16,303 @@
      * Content is injected via placeholder comment in #claude-content.
      */
 
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
 
-    /* ===== THEME VARIABLES ===== */
-    :root {
-      --bg-primary: #f5f5f7;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #e5e5e7;
-      --border: #d1d1d6;
-      --text-primary: #1d1d1f;
-      --text-secondary: #86868b;
-      --text-tertiary: #aeaeb2;
-      --accent: #0071e3;
-      --accent-hover: #0077ed;
-      --success: #34c759;
-      --warning: #ff9f0a;
-      --error: #ff3b30;
-      --selected-bg: #e8f4fd;
-      --selected-border: #0071e3;
+    /* ===== THEME: OBSIDIAN ===== */
+    :root, [data-theme="dark"] {
+      --bg-primary: #09090b;
+      --bg-secondary: #18181b;
+      --bg-tertiary: #27272a;
+      --bg-glass: rgba(9, 9, 11, 0.8);
+      --bg-elevated: rgba(39, 39, 42, 0.5);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-accent: rgba(139, 92, 246, 0.3);
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-tertiary: #52525b;
+      --accent: #a78bfa;
+      --accent-hover: #c4b5fd;
+      --accent-glow: rgba(167, 139, 250, 0.15);
+      --accent-solid: #7c3aed;
+      --brand-from: #a78bfa;
+      --brand-to: #f472b6;
+      --gold: #fbbf24;
+      --gold-glow: rgba(251, 191, 36, 0.12);
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.1);
+      --warning: #fbbf24;
+      --error: #f87171;
+      --error-bg: rgba(248, 113, 113, 0.1);
+      --selected-bg: rgba(167, 139, 250, 0.08);
+      --selected-border: #a78bfa;
+      --gradient-subtle: linear-gradient(135deg, rgba(167, 139, 250, 0.06), rgba(244, 114, 182, 0.03));
+      --gradient-brand: linear-gradient(135deg, #a78bfa, #f472b6);
+      --shadow-glow: 0 0 40px rgba(167, 139, 250, 0.08);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03);
+      --shadow-card-hover: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.1);
+      --device-bezel: #18181b;
+      --device-bezel-aos: #1e1e22;
+      --radius: 12px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #1d1d1f;
-        --bg-secondary: #2d2d2f;
-        --bg-tertiary: #3d3d3f;
-        --border: #424245;
-        --text-primary: #f5f5f7;
-        --text-secondary: #86868b;
-        --text-tertiary: #636366;
-        --accent: #0a84ff;
-        --accent-hover: #409cff;
-        --selected-bg: rgba(10, 132, 255, 0.15);
-        --selected-border: #0a84ff;
-      }
+    /* ===== THEME: PEARL ===== */
+    [data-theme="light"] {
+      --bg-primary: #fafaf9;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f5f5f4;
+      --bg-glass: rgba(255, 255, 255, 0.8);
+      --bg-elevated: rgba(255, 255, 255, 0.9);
+      --border: rgba(0, 0, 0, 0.06);
+      --border-accent: rgba(124, 58, 237, 0.2);
+      --text-primary: #1c1917;
+      --text-secondary: #57534e;
+      --text-tertiary: #a8a29e;
+      --accent: #7c3aed;
+      --accent-hover: #6d28d9;
+      --accent-glow: rgba(124, 58, 237, 0.08);
+      --accent-solid: #7c3aed;
+      --brand-from: #7c3aed;
+      --brand-to: #db2777;
+      --gold: #d97706;
+      --gold-glow: rgba(217, 119, 6, 0.08);
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.06);
+      --warning: #d97706;
+      --error: #dc2626;
+      --error-bg: rgba(220, 38, 38, 0.06);
+      --selected-bg: rgba(124, 58, 237, 0.05);
+      --selected-border: #7c3aed;
+      --gradient-subtle: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(219, 39, 119, 0.02));
+      --gradient-brand: linear-gradient(135deg, #7c3aed, #db2777);
+      --shadow-glow: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03);
+      --shadow-card-hover: 0 8px 25px rgba(0,0,0,0.08), 0 0 0 1px rgba(124,58,237,0.08);
+      --device-bezel: #1c1917;
+      --device-bezel-aos: #292524;
+      --radius: 12px;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       display: flex;
       flex-direction: column;
       line-height: 1.5;
+      transition: background 0.35s ease, color 0.35s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    [data-theme="dark"] body, :root:not([data-theme="light"]) body {
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% 0%, rgba(167, 139, 250, 0.06), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(244, 114, 182, 0.04), transparent);
+    }
+    [data-theme="light"] body {
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% 0%, rgba(124, 58, 237, 0.03), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(219, 39, 119, 0.02), transparent);
     }
 
     /* ===== FRAME STRUCTURE ===== */
     .header {
-      background: var(--bg-secondary);
-      padding: 0.5rem 1.5rem;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
+      padding: 0 1.5rem;
+      height: 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-    .header h1 { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-    .header .status { font-size: 0.7rem; color: var(--success); display: flex; align-items: center; gap: 0.4rem; }
-    .header .status::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
+    .header h1 {
+      font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+      letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .header h1 .brand {
+      background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .header .status {
+      font-size: 0.65rem; color: var(--success); display: flex; align-items: center; gap: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500;
+    }
+    .header .status::before {
+      content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
     .main { flex: 1; overflow-y: auto; }
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 3px; }
+    .main::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
     #claude-content { padding: 2rem; min-height: 100%; }
 
     .indicator-bar {
-      background: var(--bg-secondary);
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
       border-top: 1px solid var(--border);
       padding: 0.5rem 1.5rem;
       flex-shrink: 0;
       text-align: center;
     }
-    .indicator-bar span {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
+    .indicator-bar span { font-size: 0.7rem; color: var(--text-secondary); letter-spacing: 0.02em; }
     .indicator-bar .selected-text {
-      color: var(--accent);
-      font-weight: 500;
+      background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; font-weight: 600;
     }
 
     /* ===== TYPOGRAPHY ===== */
-    h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
-    h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.025em; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; letter-spacing: -0.015em; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 400; }
     .section { margin-bottom: 2rem; }
-    .label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .label {
+      font-size: 0.6rem; color: var(--text-tertiary); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 0.5rem; font-weight: 600;
+    }
 
     /* ===== OPTIONS (for A/B/C choices) ===== */
     .options { display: flex; flex-direction: column; gap: 0.75rem; }
     .option {
       background: var(--bg-secondary);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: flex-start;
       gap: 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
     }
-    .option:hover { border-color: var(--accent); }
-    .option.selected { background: var(--selected-bg); border-color: var(--selected-border); }
+    .option::before {
+      content: ''; position: absolute; inset: 0; opacity: 0;
+      background: var(--gradient-subtle);
+      transition: opacity 0.2s;
+    }
+    .option:hover {
+      border-color: var(--border-accent); transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .option:hover::before { opacity: 1; }
+    .option.selected {
+      background: var(--selected-bg); border-color: var(--selected-border);
+      box-shadow: var(--shadow-card-hover);
+    }
     .option .letter {
       background: var(--bg-tertiary);
       color: var(--text-secondary);
-      width: 1.75rem; height: 1.75rem;
-      border-radius: 6px;
+      width: 2rem; height: 2rem;
+      border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 0.85rem; flex-shrink: 0;
+      font-weight: 700; font-size: 0.8rem; flex-shrink: 0;
+      position: relative; z-index: 1;
+      transition: all 0.2s;
     }
-    .option.selected .letter { background: var(--accent); color: white; }
-    .option .content { flex: 1; }
-    .option .content h3 { font-size: 0.95rem; margin-bottom: 0.15rem; }
-    .option .content p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; }
+    .option:hover .letter { color: var(--accent); }
+    .option.selected .letter {
+      background: var(--gradient-brand); color: #fff;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    .option .content { flex: 1; position: relative; z-index: 1; }
+    .option .content h3 { font-size: 0.95rem; margin-bottom: 0.2rem; font-weight: 600; letter-spacing: -0.01em; }
+    .option .content p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; line-height: 1.5; }
 
     /* ===== CARDS (for showing designs/mockups) ===== */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
     .card {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-card);
     }
-    .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .card.selected { border-color: var(--selected-border); border-width: 2px; }
+    .card:hover {
+      border-color: var(--border-accent); transform: translateY(-4px);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .card.selected { border-color: var(--selected-border); box-shadow: 0 0 0 1px var(--selected-border), var(--shadow-card-hover); }
     .card-image { background: var(--bg-tertiary); aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; }
     .card-body { padding: 1rem; }
-    .card-body h3 { margin-bottom: 0.25rem; }
-    .card-body p { color: var(--text-secondary); font-size: 0.85rem; }
+    .card-body h3 { margin-bottom: 0.25rem; font-weight: 600; letter-spacing: -0.01em; }
+    .card-body p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
 
     /* ===== MOCKUP CONTAINER ===== */
     .mockup {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       overflow: hidden;
       margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-card);
     }
     .mockup-header {
       background: var(--bg-tertiary);
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
       border-bottom: 1px solid var(--border);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
     }
     .mockup-body { padding: 1.5rem; }
 
-    /* ===== SPLIT VIEW (side-by-side comparison) ===== */
+    /* ===== SPLIT VIEW ===== */
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     @media (max-width: 700px) { .split { grid-template-columns: 1fr; } }
 
     /* ===== PROS/CONS ===== */
     .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
-    .pros, .cons { background: var(--bg-secondary); border-radius: 8px; padding: 1rem; }
-    .pros h4 { color: var(--success); font-size: 0.85rem; margin-bottom: 0.5rem; }
-    .cons h4 { color: var(--error); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    .pros, .cons {
+      background: var(--bg-secondary); border-radius: var(--radius); padding: 1rem;
+      border: 1px solid var(--border); box-shadow: var(--shadow-card);
+    }
+    .pros { border-left: 3px solid var(--success); }
+    .cons { border-left: 3px solid var(--error); }
+    .pros h4 { color: var(--success); font-size: 0.75rem; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .cons h4 { color: var(--error); font-size: 0.75rem; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
     .pros ul, .cons ul { margin-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); }
     .pros li, .cons li { margin-bottom: 0.25rem; }
 
-    /* ===== PLACEHOLDER (for mockup areas) ===== */
+    /* ===== PLACEHOLDER ===== */
     .placeholder {
       background: var(--bg-tertiary);
-      border: 2px dashed var(--border);
-      border-radius: 8px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
       padding: 2rem;
       text-align: center;
       color: var(--text-tertiary);
     }
 
     /* ===== INLINE MOCKUP ELEMENTS ===== */
-    .mock-nav { background: var(--accent); color: white; padding: 0.75rem 1rem; display: flex; gap: 1.5rem; font-size: 0.9rem; }
+    .mock-nav { background: var(--bg-tertiary); color: var(--text-primary); padding: 0.75rem 1rem; display: flex; gap: 1.5rem; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
     .mock-sidebar { background: var(--bg-tertiary); padding: 1rem; min-width: 180px; }
     .mock-content { padding: 1.5rem; flex: 1; }
-    .mock-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
-    .mock-input { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; width: 100%; }
+    .mock-button {
+      background: var(--gradient-brand); color: #fff; border: none;
+      padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .mock-button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); filter: brightness(1.1); }
+    .mock-input {
+      background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.5rem 0.75rem; width: 100%; color: var(--text-primary);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .mock-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
     /* ===== DEVICE FRAME (auto-activated by data-device-frame) ===== */
 
@@ -200,62 +321,76 @@
       display: flex; height: 100%; gap: 0;
     }
     .device-sidebar {
-      width: 220px; flex-shrink: 0; background: var(--bg-secondary);
-      border-right: 1px solid var(--border); padding: 24px 16px;
+      width: 240px; flex-shrink: 0;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
       display: flex; flex-direction: column; gap: 20px; overflow-y: auto;
+      position: relative;
     }
+    .device-sidebar::-webkit-scrollbar { width: 4px; }
+    .device-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .device-sidebar::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 2px; }
     .device-sidebar h2 {
-      font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;
+      font-size: 15px; font-weight: 800; margin-bottom: 0;
+      letter-spacing: -0.03em;
+      background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .device-sidebar .sidebar-section { display: flex; flex-direction: column; gap: 8px; }
+    .device-sidebar .sidebar-section { display: flex; flex-direction: column; gap: 6px; }
     .device-sidebar .sidebar-label {
-      font-size: 11px; color: var(--text-tertiary); text-transform: uppercase;
-      letter-spacing: 0.05em; margin-bottom: 2px;
+      font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 2px; font-weight: 600;
     }
-    .device-switcher { display: flex; flex-direction: column; gap: 6px; }
+    .device-switcher { display: flex; flex-direction: column; gap: 4px; }
     .device-switcher button {
-      padding: 10px 16px; border-radius: 10px; border: 2px solid var(--border);
-      background: var(--bg-primary); color: var(--text-primary);
-      cursor: pointer; font-size: 13px; transition: all 0.15s;
+      padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; transition: all 0.15s ease;
       text-align: left; display: flex; align-items: center; gap: 8px;
     }
-    .device-switcher button:hover { border-color: var(--accent); }
+    .device-switcher button:hover { background: var(--bg-tertiary); color: var(--text-primary); }
     .device-switcher button.active {
-      background: var(--accent); color: #fff; border-color: var(--accent);
+      background: var(--selected-bg); color: var(--accent);
+      border-color: var(--border-accent);
     }
-    .device-switcher .device-icon { font-size: 18px; }
+    .device-switcher .device-icon { font-size: 16px; }
     .device-switcher .device-label { display: flex; flex-direction: column; }
-    .device-switcher .device-label small { font-size: 11px; opacity: 0.7; }
+    .device-switcher .device-label small { font-size: 10px; opacity: 0.5; }
     .device-sidebar .sidebar-hint {
-      font-size: 12px; color: var(--text-secondary); line-height: 1.5;
-      padding: 12px; background: var(--bg-primary); border-radius: 8px;
+      font-size: 11px; color: var(--text-tertiary); line-height: 1.6;
+      padding: 10px 12px; background: var(--bg-primary); border-radius: 8px;
+      border: 1px solid var(--border);
     }
     .device-main {
       flex: 1; display: flex; align-items: center; justify-content: center;
-      overflow: auto; padding: 20px;
+      overflow: auto; padding: 24px;
+      background:
+        radial-gradient(ellipse 50% 40% at 50% 50%, var(--accent-glow), transparent);
     }
     .device-shell {
-      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); flex-shrink: 0;
+      position: relative; flex-shrink: 0;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+      transition: box-shadow 0.3s;
     }
-    .device-shell-iphone {
-      width: 393px; border: 8px solid #1a1a1a; border-radius: 47px; overflow: hidden; background: #1a1a1a;
+    .device-shell:hover { box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 60px var(--accent-glow); }
+    .device-shell-ios {
+      border: 8px solid var(--device-bezel); border-radius: 47px; overflow: hidden; background: var(--device-bezel);
     }
-    .device-shell-android {
-      width: 412px; border: 8px solid #2a2a2a; border-radius: 36px; overflow: hidden; background: #2a2a2a;
+    .device-shell-aos {
+      border: 8px solid var(--device-bezel-aos); border-radius: 36px; overflow: hidden; background: var(--device-bezel-aos);
     }
     .device-statusbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 20px; font-size: 12px; font-weight: 600; background: #fff; color: #1a1a1a;
     }
     .device-statusbar-iphone { height: 54px; align-items: flex-end; padding-bottom: 4px; }
+    .device-statusbar-iphone-se { height: 44px; }
     .device-statusbar-android { height: 40px; font-weight: 400; }
     .device-dynamic-island {
       position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
       width: 120px; height: 34px; background: #1a1a1a; border-radius: 20px; z-index: 10;
     }
     .device-content { overflow-y: auto; background: #fff; }
-    .device-content-iphone { height: 798px; }
-    .device-content-android { height: 835px; }
     .device-homebar {
       height: 34px; background: #fff; display: flex; align-items: center; justify-content: center;
     }
@@ -281,12 +416,15 @@
       display: flex; flex-direction: column; align-items: center; gap: 12px; flex-shrink: 0;
     }
     .canvas-item-title {
-      font-size: 14px; font-weight: 600; color: var(--text-primary);
-      padding: 6px 16px; background: var(--bg-secondary); border-radius: 8px;
-      border: 1px solid var(--border); text-align: center;
+      font-size: 13px; font-weight: 600; color: var(--text-primary);
+      padding: 6px 16px; background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px; border: 1px solid var(--border); text-align: center;
+      transition: all 0.2s ease; letter-spacing: -0.01em;
     }
+    .canvas-item-title:hover { border-color: var(--border-accent); background: var(--bg-elevated); }
     .canvas-item-title.selected {
-      background: var(--accent); color: #fff; border-color: var(--accent);
+      background: var(--selected-bg);
+      color: var(--accent); border-color: var(--selected-border);
     }
     .canvas-item iframe {
       border: none; display: block; width: 100%; height: 100%;
@@ -294,19 +432,20 @@
     /* Layout switcher in sidebar */
     .layout-switcher { display: flex; gap: 4px; }
     .layout-switcher button {
-      flex: 1; padding: 8px; border-radius: 8px; border: 2px solid var(--border);
-      background: var(--bg-primary); color: var(--text-secondary);
-      cursor: pointer; font-size: 12px; transition: all 0.15s; text-align: center;
+      flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-tertiary); color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
     }
-    .layout-switcher button:hover { border-color: var(--accent); }
+    .layout-switcher button:hover { background: var(--bg-tertiary); color: var(--text-primary); }
     .layout-switcher button.active {
-      background: var(--accent); color: #fff; border-color: var(--accent);
+      background: var(--selected-bg); color: var(--accent); border-color: var(--border-accent);
     }
     /* Scheme list in sidebar */
     .scheme-list { display: flex; flex-direction: column; gap: 4px; }
     .scheme-list-item {
       padding: 8px 12px; border-radius: 8px; font-size: 13px;
       color: var(--text-secondary); cursor: default; display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .scheme-list-item .dot {
       width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
@@ -314,56 +453,132 @@
     /* Clickable scheme items in canvas mode */
     .scheme-list-item.clickable { cursor: pointer; transition: all 0.15s; }
     .scheme-list-item.clickable:hover { background: var(--bg-tertiary); }
-    .scheme-list-item.clickable.active { background: var(--selected-bg); color: var(--accent); font-weight: 600; }
+    .scheme-list-item.clickable.active { background: var(--selected-bg); color: var(--accent); font-weight: 600; border-left: 2px solid var(--accent); }
 
     /* ===== RIGHT SIDEBAR (interaction spec) ===== */
     .spec-sidebar {
-      width: 320px; flex-shrink: 0; background: var(--bg-secondary);
+      width: 420px; flex-shrink: 0; background: var(--bg-glass);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-left: 1px solid var(--border); overflow-y: auto;
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; position: relative;
+      min-width: 280px; max-width: 700px;
+    }
+    .spec-resize-handle {
+      position: absolute; top: 0; left: -4px; width: 8px; height: 100%;
+      cursor: col-resize; z-index: 10;
+    }
+    .spec-resize-handle::after {
+      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 2px; height: 32px; border-radius: 2px;
+      background: var(--text-tertiary); opacity: 0; transition: opacity 0.2s;
+    }
+    .spec-resize-handle:hover::after, .spec-resize-handle.dragging::after {
+      opacity: 0.6;
     }
     .spec-sidebar-header {
       padding: 16px 20px; border-bottom: 1px solid var(--border);
       font-size: 13px; font-weight: 600; color: var(--text-primary);
       display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+      background: var(--bg-glass);
     }
     .spec-sidebar-header .close-btn {
-      width: 24px; height: 24px; border-radius: 6px; border: none;
+      width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border);
       background: var(--bg-tertiary); color: var(--text-secondary);
       cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
     }
-    .spec-sidebar-header .close-btn:hover { background: var(--border); }
+    .spec-sidebar-header .close-btn:hover { background: rgba(252, 129, 129, 0.1); border-color: rgba(252, 129, 129, 0.3); color: var(--error); }
     .spec-sidebar-body {
-      padding: 20px; flex: 1; font-size: 13px; line-height: 1.7; color: var(--text-primary);
+      padding: 16px; flex: 1; font-size: 13px; line-height: 1.6; color: var(--text-primary);
+      display: flex; flex-direction: column; gap: 12px;
     }
-    .spec-sidebar-body h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px 0; color: var(--accent); }
-    .spec-sidebar-body h3:first-child { margin-top: 0; }
-    .spec-sidebar-body p { margin: 0 0 8px 0; color: var(--text-secondary); }
-    .spec-sidebar-body table { width: 100%; border-collapse: collapse; margin: 8px 0 16px 0; font-size: 12px; }
-    .spec-sidebar-body th {
-      text-align: left; padding: 6px 8px; background: var(--bg-tertiary);
-      border: 1px solid var(--border); font-weight: 600; color: var(--text-secondary);
+    /* Spec cards — each section is a card */
+    .spec-card {
+      background: var(--bg-primary); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      transition: border-color 0.2s;
     }
-    .spec-sidebar-body td { padding: 6px 8px; border: 1px solid var(--border); }
-    .spec-sidebar-body ul, .spec-sidebar-body ol { margin: 4px 0 12px 20px; color: var(--text-secondary); }
-    .spec-sidebar-body li { margin-bottom: 4px; }
+    .spec-card:hover { border-color: var(--border-accent); }
+    .spec-card-header {
+      padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--accent);
+      background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      user-select: none; transition: background 0.2s;
+    }
+    .spec-card-header:hover { background: var(--bg-tertiary); }
+    .spec-card-header .toggle-icon {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: var(--bg-tertiary); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-secondary); font-weight: 300;
+      transition: all 0.2s; flex-shrink: 0; line-height: 1;
+    }
+    .spec-card-header:hover .toggle-icon { border-color: var(--border-accent); color: var(--accent); }
+    .spec-card .toggle-icon::after { content: '\2212'; }
+    .spec-card.collapsed .toggle-icon::after { content: '+'; }
+    .spec-card.collapsed .spec-card-body { display: none; }
+    .spec-card-body { padding: 12px 14px; }
+    .spec-card-body p { margin: 0 0 8px 0; color: var(--text-secondary); }
+    .spec-card-body table { width: 100%; border-collapse: collapse; margin: 4px 0 8px 0; font-size: 12px; }
+    .spec-card-body th {
+      text-align: left; padding: 5px 8px; background: var(--bg-secondary);
+      border: 1px solid var(--border); font-weight: 600; color: var(--text-secondary); font-size: 11px;
+    }
+    .spec-card-body td { padding: 5px 8px; border: 1px solid var(--border); font-size: 12px; }
+    .spec-card-body ul, .spec-card-body ol { margin: 4px 0 8px 18px; color: var(--text-secondary); }
+    .spec-card-body li { margin-bottom: 3px; }
     .spec-sidebar-empty {
       padding: 40px 20px; text-align: center; color: var(--text-tertiary); font-size: 13px;
     }
     /* Toggle button for spec sidebar (in left sidebar) */
     .spec-toggle {
-      padding: 10px 16px; border-radius: 10px; border: 2px solid var(--border);
-      background: var(--bg-primary); color: var(--text-primary);
-      cursor: pointer; font-size: 13px; transition: all 0.15s; text-align: left; width: 100%;
+      padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; transition: all 0.15s ease; text-align: left; width: 100%;
     }
-    .spec-toggle:hover { border-color: var(--accent); }
-    .spec-toggle.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .spec-toggle:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+    .spec-toggle.active {
+      background: var(--selected-bg); color: var(--accent); border-color: var(--border-accent);
+    }
+
+    /* ===== THEME TOGGLE ===== */
+    .theme-toggle {
+      padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; transition: all 0.15s ease;
+      text-align: left; width: 100%; display: flex; align-items: center; gap: 8px;
+    }
+    .theme-toggle:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+    .theme-toggle .theme-icon { font-size: 14px; flex-shrink: 0; }
+    .theme-toggle .theme-label { flex: 1; }
+
+    /* ===== CONNECTOR LINES (spec cards → phone shell) ===== */
+    .connector-svg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 50;
+    }
+    .connector-line {
+      fill: none; stroke: var(--accent); stroke-width: 1.5;
+      opacity: 0.35; transition: opacity 0.3s;
+    }
+    .connector-dot {
+      fill: var(--accent); opacity: 0.5; transition: opacity 0.3s;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>Super PM - Interaction Design</h1>
-    <div class="status">Connected</div>
+    <h1><span class="brand">Super PM</span> - Interaction Design</h1>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="theme-toggle" id="header-lang-btn" style="padding:4px 10px;width:auto;font-size:0.7rem;border-radius:6px">
+        <span id="header-lang-icon" style="font-size:0.7rem">EN</span>
+      </button>
+      <button class="theme-toggle" id="header-theme-btn" style="padding:4px 10px;width:auto;font-size:0.7rem;border-radius:6px">
+        <span class="theme-icon" id="header-theme-icon"></span>
+        <span class="theme-label" id="header-theme-label"></span>
+      </button>
+      <div class="status"><span data-i18n="connected">Connected</span></div>
+    </div>
   </div>
 
   <div class="main">
@@ -373,7 +588,7 @@
   </div>
 
   <div class="indicator-bar">
-    <span id="indicator-text">Click an option above, then return to the terminal</span>
+    <span id="indicator-text" data-i18n="indicatorDefault">Click an option above, then return to the terminal</span>
   </div>
 
   <script>
@@ -382,22 +597,55 @@
       var content = document.getElementById('claude-content');
 
       // Shared: device configurations
+      var defaultDevice = 'iphone-15';
       var devices = {
-        iphone: {
-          shellClass: 'device-shell device-shell-iphone',
+        'iphone-16-pro-max': {
+          group: 'ios', name: 'iPhone 16 Pro Max', size: '430\u00D7868',
+          w: 430, h: 868,
           statusClass: 'device-statusbar device-statusbar-iphone',
-          screenClass: 'device-content device-content-iphone',
           statusHtml: '<span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span>',
           bottomHtml: '<div class="device-homebar"><div class="device-homebar-pill"></div></div>',
-          showIsland: true, width: 393
+          showIsland: true
         },
-        android: {
-          shellClass: 'device-shell device-shell-android',
+        'iphone-15': {
+          group: 'ios', name: 'iPhone 15', size: '393\u00D7788',
+          w: 393, h: 788,
+          statusClass: 'device-statusbar device-statusbar-iphone',
+          statusHtml: '<span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span>',
+          bottomHtml: '<div class="device-homebar"><div class="device-homebar-pill"></div></div>',
+          showIsland: true
+        },
+        'iphone-se': {
+          group: 'ios', name: 'iPhone SE', size: '375\u00D7603',
+          w: 375, h: 603,
+          statusClass: 'device-statusbar device-statusbar-iphone-se',
+          statusHtml: '<span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span>',
+          bottomHtml: '',
+          showIsland: false
+        },
+        'pixel-9-pro': {
+          group: 'aos', name: 'Pixel 9 Pro', size: '412\u00D7835',
+          w: 412, h: 835,
           statusClass: 'device-statusbar device-statusbar-android',
-          screenClass: 'device-content device-content-android',
           statusHtml: '<span>12:00</span><span style="font-size:11px">\u25B2 \uD83D\uDCF6 \uD83D\uDD0B88%</span>',
           bottomHtml: '<div class="device-navbar-android"><div class="nav-triangle"></div><div class="nav-circle"></div><div class="nav-square"></div></div>',
-          showIsland: false, width: 412
+          showIsland: false
+        },
+        'galaxy-s24': {
+          group: 'aos', name: 'Galaxy S24', size: '360\u00D7700',
+          w: 360, h: 700,
+          statusClass: 'device-statusbar device-statusbar-android',
+          statusHtml: '<span>12:00</span><span style="font-size:11px">\u25B2 \uD83D\uDCF6 \uD83D\uDD0B88%</span>',
+          bottomHtml: '<div class="device-navbar-android"><div class="nav-triangle"></div><div class="nav-circle"></div><div class="nav-square"></div></div>',
+          showIsland: false
+        },
+        'galaxy-fold': {
+          group: 'aos', name: 'Galaxy Fold', size: '344\u00D7802',
+          w: 344, h: 802,
+          statusClass: 'device-statusbar device-statusbar-android',
+          statusHtml: '<span>12:00</span><span style="font-size:11px">\u25B2 \uD83D\uDCF6 \uD83D\uDD0B88%</span>',
+          bottomHtml: '<div class="device-navbar-android"><div class="nav-triangle"></div><div class="nav-circle"></div><div class="nav-square"></div></div>',
+          showIsland: false
         }
       };
 
@@ -413,34 +661,172 @@
         content.style.height = '100%';
       }
 
+      // Theme: read from localStorage, apply to <html>, sync all toggle buttons
+      var currentTheme = localStorage.getItem('superpm-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+
+      var LIGHT_ICON = '\u2600\uFE0F', DARK_ICON = '\uD83C\uDF19';
+
+      function syncThemeUI() {
+        var icons = document.querySelectorAll('#theme-icon, #header-theme-icon');
+        var labels = document.querySelectorAll('#theme-label, #header-theme-label');
+        var iconText = currentTheme === 'light' ? LIGHT_ICON : DARK_ICON;
+        var labelText = currentTheme === 'light' ? 'Light Mode' : 'Dark Mode';
+        icons.forEach(function(el) { el.textContent = iconText; });
+        labels.forEach(function(el) { el.textContent = labelText; });
+      }
+
+      function toggleTheme() {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('superpm-theme', currentTheme);
+        syncThemeUI();
+      }
+
+      // Init header theme button immediately
+      syncThemeUI();
+      var headerThemeBtn = document.getElementById('header-theme-btn');
+      if (headerThemeBtn) headerThemeBtn.addEventListener('click', toggleTheme);
+
+      // ===== i18n =====
+      var i18n = {
+        en: {
+          connected: 'Connected',
+          interactionDesign: 'Interaction Design',
+          device: 'Device',
+          specs: 'Specs',
+          showSpec: 'Show Interaction Spec',
+          specTitle: 'Interaction Spec',
+          specEmpty: 'Select a prototype to view its interaction spec',
+          noSpec: 'No interaction spec available',
+          theme: 'Theme',
+          lightMode: 'Light Mode',
+          darkMode: 'Dark Mode',
+          language: 'Language',
+          status: 'Status',
+          statusHint: 'Interact with prototypes, then return to terminal',
+          indicatorDefault: 'Click an option above, then return to the terminal',
+          selected: 'selected',
+          returnHint: '\u2014 return to terminal to continue',
+          schemes: 'Schemes',
+          layout: 'Layout'
+        },
+        zh: {
+          connected: '\u5DF2\u8FDE\u63A5',
+          interactionDesign: '\u4EA4\u4E92\u8BBE\u8BA1',
+          device: '\u8BBE\u5907',
+          specs: '\u4EA4\u4E92\u8BF4\u660E',
+          showSpec: '\u67E5\u770B\u4EA4\u4E92\u8BF4\u660E',
+          specTitle: '\u4EA4\u4E92\u8BF4\u660E',
+          specEmpty: '\u9009\u62E9\u539F\u578B\u67E5\u770B\u4EA4\u4E92\u8BF4\u660E',
+          noSpec: '\u6682\u65E0\u4EA4\u4E92\u8BF4\u660E',
+          theme: '\u4E3B\u9898',
+          lightMode: '\u6D45\u8272\u6A21\u5F0F',
+          darkMode: '\u6DF1\u8272\u6A21\u5F0F',
+          language: '\u8BED\u8A00',
+          status: '\u72B6\u6001',
+          statusHint: '\u4E0E\u539F\u578B\u4EA4\u4E92\u540E\uFF0C\u8FD4\u56DE\u7EC8\u7AEF\u7EE7\u7EED',
+          indicatorDefault: '\u70B9\u51FB\u4E0A\u65B9\u9009\u9879\uFF0C\u7136\u540E\u8FD4\u56DE\u7EC8\u7AEF',
+          selected: '\u5DF2\u9009\u62E9',
+          returnHint: '\u2014 \u8FD4\u56DE\u7EC8\u7AEF\u7EE7\u7EED',
+          schemes: '\u65B9\u6848',
+          layout: '\u5E03\u5C40'
+        }
+      };
+
+      var currentLang = localStorage.getItem('superpm-lang') || 'en';
+
+      function t(key) { return (i18n[currentLang] && i18n[currentLang][key]) || i18n.en[key] || key; }
+
+      function syncLangUI() {
+        // Update all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          el.textContent = t(el.getAttribute('data-i18n'));
+        });
+        // Update header lang button
+        var headerIcon = document.getElementById('header-lang-icon');
+        if (headerIcon) headerIcon.textContent = currentLang === 'en' ? 'EN' : '\u4E2D';
+        var sidebarIcon = document.getElementById('lang-icon');
+        if (sidebarIcon) sidebarIcon.textContent = currentLang === 'en' ? 'EN' : '\u4E2D';
+        var sidebarLabel = document.getElementById('lang-label');
+        if (sidebarLabel) sidebarLabel.textContent = currentLang === 'en' ? 'English' : '\u4E2D\u6587';
+        // Update theme labels to match language
+        var themeLabels = document.querySelectorAll('#theme-label, #header-theme-label');
+        var themeLabelText = currentTheme === 'light' ? t('lightMode') : t('darkMode');
+        themeLabels.forEach(function(el) { el.textContent = themeLabelText; });
+        // Update indicator bar default text
+        var indicator = document.getElementById('indicator-text');
+        if (indicator && !indicator.querySelector('.selected-text')) {
+          indicator.textContent = t('indicatorDefault');
+        }
+      }
+
+      function toggleLang() {
+        currentLang = currentLang === 'en' ? 'zh' : 'en';
+        localStorage.setItem('superpm-lang', currentLang);
+        syncLangUI();
+      }
+
+      // Init header lang button
+      syncLangUI();
+      var headerLangBtn = document.getElementById('header-lang-btn');
+      if (headerLangBtn) headerLangBtn.addEventListener('click', toggleLang);
+
       // Shared: build sidebar HTML
       function buildSidebar(extraSections) {
+        // Group devices by platform
+        var groups = { ios: [], aos: [] };
+        Object.keys(devices).forEach(function(key) {
+          var d = devices[key];
+          groups[d.group].push(key);
+        });
+        var groupLabels = { ios: 'iOS', aos: 'Android' };
+        var groupIcons = { ios: '\uD83D\uDCF1', aos: '\uD83E\uDD16' };
+
+        var deviceButtonsHtml = '';
+        ['ios', 'aos'].forEach(function(g) {
+          deviceButtonsHtml += '<div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.12em;font-weight:600;margin-top:4px">' + groupLabels[g] + '</div>';
+          groups[g].forEach(function(key) {
+            var d = devices[key];
+            var isActive = key === defaultDevice ? ' class="active"' : '';
+            deviceButtonsHtml += '<button' + isActive + ' data-dev="' + key + '">' +
+              '<span class="device-icon">' + groupIcons[g] + '</span>' +
+              '<span class="device-label">' + d.name + '<small>' + d.size + '</small></span>' +
+            '</button>';
+          });
+        });
+
         return '<div class="device-sidebar">' +
           '<div>' +
             '<h2>Super PM</h2>' +
-            '<p style="font-size:12px;color:var(--text-secondary);margin:0">Interaction Design</p>' +
+            '<p style="font-size:12px;color:var(--text-secondary);margin:0" data-i18n="interactionDesign">' + t('interactionDesign') + '</p>' +
           '</div>' +
           '<div class="sidebar-section">' +
-            '<div class="sidebar-label">Device</div>' +
-            '<div class="device-switcher">' +
-              '<button class="active" data-dev="iphone">' +
-                '<span class="device-icon">\uD83D\uDCF1</span>' +
-                '<span class="device-label">iPhone 15<small>393 \u00D7 852</small></span>' +
-              '</button>' +
-              '<button data-dev="android">' +
-                '<span class="device-icon">\uD83E\uDD16</span>' +
-                '<span class="device-label">Android<small>412 \u00D7 915</small></span>' +
-              '</button>' +
-            '</div>' +
+            '<div class="sidebar-label" data-i18n="device">' + t('device') + '</div>' +
+            '<div class="device-switcher">' + deviceButtonsHtml + '</div>' +
           '</div>' +
           (extraSections || '') +
           '<div class="sidebar-section">' +
-            '<div class="sidebar-label">Specs</div>' +
-            '<button class="spec-toggle" id="spec-toggle-btn">Show Interaction Spec</button>' +
+            '<div class="sidebar-label" data-i18n="specs">' + t('specs') + '</div>' +
+            '<button class="spec-toggle" id="spec-toggle-btn" data-i18n="showSpec">' + t('showSpec') + '</button>' +
           '</div>' +
           '<div class="sidebar-section">' +
-            '<div class="sidebar-label">Status</div>' +
-            '<div class="sidebar-hint" id="sidebar-indicator">Interact with prototypes, then return to terminal</div>' +
+            '<div class="sidebar-label" data-i18n="theme">' + t('theme') + '</div>' +
+            '<button class="theme-toggle" id="theme-toggle-btn">' +
+              '<span class="theme-icon" id="theme-icon">' + (currentTheme === 'light' ? LIGHT_ICON : DARK_ICON) + '</span>' +
+              '<span class="theme-label" id="theme-label">' + (currentTheme === 'light' ? t('lightMode') : t('darkMode')) + '</span>' +
+            '</button>' +
+          '</div>' +
+          '<div class="sidebar-section">' +
+            '<div class="sidebar-label" data-i18n="language">' + t('language') + '</div>' +
+            '<button class="theme-toggle" id="lang-toggle-btn">' +
+              '<span id="lang-icon" style="font-weight:700">' + (currentLang === 'en' ? 'EN' : '\u4E2D') + '</span>' +
+              '<span id="lang-label">' + (currentLang === 'en' ? 'English' : '\u4E2D\u6587') + '</span>' +
+            '</button>' +
+          '</div>' +
+          '<div class="sidebar-section">' +
+            '<div class="sidebar-label" data-i18n="status">' + t('status') + '</div>' +
+            '<div class="sidebar-hint" id="sidebar-indicator" data-i18n="statusHint">' + t('statusHint') + '</div>' +
           '</div>' +
         '</div>';
       }
@@ -448,12 +834,13 @@
       // Shared: build right spec sidebar
       function buildSpecSidebar(specHtml) {
         return '<div class="spec-sidebar" id="spec-sidebar" style="display:none">' +
+          '<div class="spec-resize-handle" id="spec-resize"></div>' +
           '<div class="spec-sidebar-header">' +
-            '<span>Interaction Spec</span>' +
+            '<span data-i18n="specTitle">' + t('specTitle') + '</span>' +
             '<button class="close-btn" id="spec-close">\u00D7</button>' +
           '</div>' +
           '<div class="spec-sidebar-body" id="spec-body">' +
-            (specHtml || '<div class="spec-sidebar-empty">Select a prototype to view its interaction spec</div>') +
+            (specHtml || '<div class="spec-sidebar-empty" data-i18n="specEmpty">' + t('specEmpty') + '</div>') +
           '</div>' +
         '</div>';
       }
@@ -462,6 +849,49 @@
       function extractSpec(el) {
         var specEl = el ? el.querySelector('[data-interaction-spec]') : null;
         return specEl ? specEl.innerHTML : '';
+      }
+
+      // Shared: bind spec sidebar resize handle
+      function bindSpecResize() {
+        var handle = document.getElementById('spec-resize');
+        var sidebar = document.getElementById('spec-sidebar');
+        if (!handle || !sidebar) return;
+        var startX, startW;
+        handle.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          startX = e.clientX;
+          startW = sidebar.offsetWidth;
+          handle.classList.add('dragging');
+          document.body.style.cursor = 'col-resize';
+          document.body.style.userSelect = 'none';
+          function onMove(e) {
+            var w = startW - (e.clientX - startX);
+            if (w >= 280 && w <= 700) sidebar.style.width = w + 'px';
+          }
+          function onUp() {
+            handle.classList.remove('dragging');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+          }
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onUp);
+        });
+      }
+
+      // Shared: bind sidebar theme toggle button + sync UI
+      function bindThemeToggle() {
+        var btn = document.getElementById('theme-toggle-btn');
+        if (btn) btn.addEventListener('click', toggleTheme);
+        syncThemeUI();
+      }
+
+      // Shared: bind sidebar lang toggle button + sync UI
+      function bindLangToggle() {
+        var btn = document.getElementById('lang-toggle-btn');
+        if (btn) btn.addEventListener('click', toggleLang);
+        syncLangUI();
       }
 
       // Shared: bind spec sidebar toggle and close
@@ -473,6 +903,7 @@
           closeBtn.addEventListener('click', function() {
             sidebar.style.display = 'none';
             if (toggleBtn) toggleBtn.classList.remove('active');
+            drawConnectors();
           });
         }
         if (toggleBtn && sidebar) {
@@ -480,42 +911,154 @@
             var visible = sidebar.style.display !== 'none';
             sidebar.style.display = visible ? 'none' : 'flex';
             toggleBtn.classList.toggle('active', !visible);
+            setTimeout(drawConnectors, 50);
           });
         }
+        // Update connectors on scroll, resize, and card collapse/expand
+        if (sidebar) {
+          sidebar.addEventListener('scroll', drawConnectors);
+          sidebar.addEventListener('click', function(e) {
+            if (e.target.closest('.spec-card-header')) setTimeout(drawConnectors, 50);
+          });
+        }
+        window.addEventListener('resize', drawConnectors);
       }
 
       // Shared: update spec sidebar content
+      // Convert raw spec HTML into cards (split by h3 headings)
+      function specToCards(html) {
+        if (!html) return '<div class="spec-sidebar-empty">No interaction spec available</div>';
+        // Parse into a temp container
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var children = Array.prototype.slice.call(tmp.childNodes);
+        var cards = [];
+        var currentTitle = '';
+        var currentBody = '';
+
+        function flush() {
+          if (currentTitle || currentBody.trim()) {
+            cards.push(
+              '<div class="spec-card">' +
+                '<div class="spec-card-header" onclick="this.parentElement.classList.toggle(\'collapsed\')">' +
+                  '<span>' + (currentTitle || 'Overview') + '</span>' +
+                  '<span class="toggle-icon"></span>' +
+                '</div>' +
+                '<div class="spec-card-body">' + currentBody + '</div>' +
+              '</div>'
+            );
+          }
+          currentTitle = '';
+          currentBody = '';
+        }
+
+        children.forEach(function(node) {
+          if (node.nodeType === 1 && node.tagName === 'H3') {
+            flush();
+            currentTitle = node.textContent;
+          } else {
+            if (node.nodeType === 1) currentBody += node.outerHTML;
+            else if (node.nodeType === 3 && node.textContent.trim()) currentBody += node.textContent;
+          }
+        });
+        flush();
+
+        return cards.length > 0 ? cards.join('') : '<div class="spec-sidebar-empty">No interaction spec available</div>';
+      }
+
       function showSpec(html) {
         var sidebar = document.getElementById('spec-sidebar');
         var body = document.getElementById('spec-body');
         var toggleBtn = document.getElementById('spec-toggle-btn');
-        if (body) body.innerHTML = html || '<div class="spec-sidebar-empty">No interaction spec available</div>';
+        if (body) body.innerHTML = specToCards(html);
         if (sidebar) sidebar.style.display = 'flex';
         if (toggleBtn) toggleBtn.classList.add('active');
+        setTimeout(drawConnectors, 50);
+      }
+
+      // Connector lines: draw bezier curves from spec cards to phone shell
+      function drawConnectors() {
+        var existing = document.getElementById('connector-svg');
+        if (existing) existing.remove();
+
+        var shell = document.querySelector('[data-role="shell"]');
+        var specBody = document.getElementById('spec-body');
+        var specSidebar = document.getElementById('spec-sidebar');
+        if (!shell || !specBody || !specSidebar || specSidebar.style.display === 'none') return;
+
+        var cards = specBody.querySelectorAll('.spec-card:not(.collapsed)');
+        if (cards.length === 0) return;
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'connector-svg');
+        svg.setAttribute('id', 'connector-svg');
+        document.body.appendChild(svg);
+
+        var shellRect = shell.getBoundingClientRect();
+        var shellRight = shellRect.right;
+        var shellCenterY = shellRect.top + shellRect.height / 2;
+
+        cards.forEach(function(card) {
+          var cardRect = card.getBoundingClientRect();
+          var startX = cardRect.left;
+          var startY = cardRect.top + cardRect.height / 2;
+          var endX = shellRight + 12;
+          var endY = Math.min(Math.max(startY, shellRect.top + 40), shellRect.bottom - 40);
+          var cpOffset = Math.abs(startX - endX) * 0.4;
+
+          var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('class', 'connector-line');
+          path.setAttribute('d',
+            'M' + startX + ',' + startY +
+            ' C' + (startX - cpOffset) + ',' + startY +
+            ' ' + (endX + cpOffset) + ',' + endY +
+            ' ' + endX + ',' + endY
+          );
+          svg.appendChild(path);
+
+          var dotStart = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dotStart.setAttribute('class', 'connector-dot');
+          dotStart.setAttribute('cx', startX);
+          dotStart.setAttribute('cy', startY);
+          dotStart.setAttribute('r', '3');
+          svg.appendChild(dotStart);
+
+          var dotEnd = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dotEnd.setAttribute('class', 'connector-dot');
+          dotEnd.setAttribute('cx', endX);
+          dotEnd.setAttribute('cy', endY);
+          dotEnd.setAttribute('r', '3');
+          svg.appendChild(dotEnd);
+        });
       }
 
       // Shared: build a device shell HTML string (for wrapping content or iframe)
       function buildShell(innerContent) {
-        return '<div class="device-shell device-shell-iphone" data-role="shell">' +
-          '<div class="device-dynamic-island" data-role="island"></div>' +
-          '<div class="device-statusbar device-statusbar-iphone" data-role="statusbar"><span>9:41</span><span style="font-size:11px">\u25CF\u25CF\u25CF \uD83D\uDD0B</span></div>' +
-          '<div class="device-content device-content-iphone" data-role="screen">' + innerContent + '</div>' +
-          '<div data-role="bottom"><div class="device-homebar"><div class="device-homebar-pill"></div></div></div>' +
+        var cfg = devices[defaultDevice];
+        var shellClass = cfg.group === 'ios' ? 'device-shell-ios' : 'device-shell-aos';
+        return '<div class="device-shell ' + shellClass + '" data-role="shell" style="width:' + cfg.w + 'px">' +
+          '<div class="device-dynamic-island" data-role="island"' + (cfg.showIsland ? '' : ' style="display:none"') + '></div>' +
+          '<div class="' + cfg.statusClass + '" data-role="statusbar">' + cfg.statusHtml + '</div>' +
+          '<div class="device-content" data-role="screen" style="height:' + cfg.h + 'px">' + innerContent + '</div>' +
+          '<div data-role="bottom">' + cfg.bottomHtml + '</div>' +
         '</div>';
       }
 
       // Shared: bind device switcher to update all shells on the page
       function bindDeviceSwitcher() {
-        var buttons = document.querySelectorAll('.device-switcher button');
+        var buttons = document.querySelectorAll('.device-switcher button[data-dev]');
         buttons.forEach(function(btn) {
           btn.addEventListener('click', function() {
             var dev = btn.getAttribute('data-dev');
             var cfg = devices[dev];
+            if (!cfg) return;
             buttons.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
+            var shellClass = cfg.group === 'ios' ? 'device-shell-ios' : 'device-shell-aos';
             // Update ALL shells on the page
             document.querySelectorAll('[data-role="shell"]').forEach(function(shell) {
-              shell.className = cfg.shellClass;
+              shell.className = 'device-shell ' + shellClass;
+              shell.style.width = cfg.w + 'px';
             });
             document.querySelectorAll('[data-role="island"]').forEach(function(el) {
               el.style.display = cfg.showIsland ? 'block' : 'none';
@@ -525,7 +1068,8 @@
               el.innerHTML = cfg.statusHtml;
             });
             document.querySelectorAll('[data-role="screen"]').forEach(function(el) {
-              el.className = cfg.screenClass;
+              el.className = 'device-content';
+              el.style.height = cfg.h + 'px';
             });
             document.querySelectorAll('[data-role="bottom"]').forEach(function(el) {
               el.innerHTML = cfg.bottomHtml;
@@ -601,7 +1145,10 @@
           '</div>';
 
         bindDeviceSwitcher();
+        bindThemeToggle();
+        bindLangToggle();
         bindSpecSidebar();
+        bindSpecResize();
 
         // Click scheme title or sidebar list → show spec in right sidebar
         function selectScheme(file) {
@@ -678,7 +1225,10 @@
         '</div>';
 
       bindDeviceSwitcher();
+      bindThemeToggle();
+      bindLangToggle();
       bindSpecSidebar();
+      bindSpecResize();
       // Auto-show spec if available
       if (specHtml) showSpec(specHtml);
     });
